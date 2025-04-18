@@ -7,6 +7,9 @@ import cors from "cors";
 //importing functions
 import connectToDb from "./database/db.js";
 
+//importing routes
+import authRouters from "./routes/auth.routes.js";
+
 //creating the app,PORT and configurations
 const app = express();
 dotenv.config();
@@ -26,6 +29,9 @@ app.use(
     credentials: true,
   })
 );
+
+//receiving the routes
+app.use("/api/auth", authRouters);
 
 //cookie parser
 app.use(cookieParser());
