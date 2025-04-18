@@ -14,6 +14,10 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
     return <Navigate to={"/auth/register"} />;
   }
 
+  if (isAuthenticated && location.pathname.includes("/register")) {
+    return <Navigate to={"/auth/login"} />;
+  }
+
   if (
     isAuthenticated &&
     (location.pathname.includes("/login") ||
