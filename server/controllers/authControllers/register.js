@@ -12,6 +12,11 @@ const register = async (req, res) => {
         .status(403)
         .json({ success: false, error: "Please add all the inputs" });
 
+    //checking if the user already exists
+    const checkUser = await User.findOne({ email });
+    if (checkUser)
+      return res.status(400).json({ message: "User already exist" });
+
     //working on the password
     if (password.length < 6)
       return res
@@ -20,7 +25,7 @@ const register = async (req, res) => {
     const hashedPassword = await hashPassword(password, 12);
 
     //working on the email
-    const validatedEmail = await validateEmail(email);
+    const validatedEmail = validateEmail(email);
     if (!validatedEmail)
       return res.status(400).json({ error: "Add correct email format." });
 

@@ -1,7 +1,11 @@
 import Form from "@/components/common/Form";
+import { loginUserAction } from "@/store/auth-slice/auth-slice";
+
 import { loginFormControls } from "@/config";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 const initialState = {
   email: "",
@@ -9,11 +13,26 @@ const initialState = {
 };
 
 const AuthLogin = () => {
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState(initialState);
+
   const onSubmit = (e) => {
     e.preventDefault();
+
     setFormData(initialState);
-    console.log(formData);
+
+    dispatch(loginUserAction(formData)).then((data) => {
+      if (data?.payload?.success) {
+        toast({
+          title: data.payload.message,
+        });
+      } else {
+        toast({
+          title: data.payload.message,
+        });
+      }
+    });
   };
 
   return (
