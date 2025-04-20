@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 
-import User from "../../models/user.model";
-import { validateEmail } from "../../utils/email";
-import { comparePassword } from "../../utils/password";
+import User from "../../models/user.model.js";
+import { validateEmail } from "../../utils/email.js";
+import { comparePassword } from "../../utils/password.js";
 
 const login = async (req, res) => {
   const { email, password } = req.body;
