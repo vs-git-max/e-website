@@ -24,7 +24,7 @@ const login = async (req, res) => {
     if (!user)
       return res.status(400).json({ success: false, error: "User not found" });
 
-    //workinon the password
+    //working on the password
     const correctPassword = await comparePassword(user.password, password);
 
     if (!correctPassword)
