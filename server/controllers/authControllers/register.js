@@ -3,11 +3,11 @@ import { hashPassword } from "../../utils/password.js";
 import { validateEmail } from "../../utils/email.js";
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { username, email, password } = req.body;
 
   try {
     //checking if user add all the fields
-    if ([name, email, password].some((item) => !item || item.trim() === ""))
+    if ([username, email, password].some((item) => !item || item.trim() === ""))
       return res
         .status(403)
         .json({ success: false, error: "Please add all the inputs" });
@@ -25,13 +25,13 @@ const register = async (req, res) => {
     const hashedPassword = await hashPassword(password, 12);
 
     //working on the email
-    const validatedEmail = validateEmail(email);
+    const validatedEmail = await validateEmail(email);
     if (!validatedEmail)
       return res.status(400).json({ error: "Add correct email format." });
 
     //creating the new user
     const newUser = new User({
-      name,
+      username,
       email,
       password: hashedPassword,
     });

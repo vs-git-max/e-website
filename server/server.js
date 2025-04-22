@@ -9,6 +9,7 @@ import connectToDb from "./database/db.js";
 
 //importing routes
 import authRouters from "./routes/auth.routes.js";
+import adminProductRouters from "./routes/admin/products.routes.js";
 
 //creating the app,PORT and configurations
 const app = express();
@@ -32,6 +33,7 @@ app.use(
 
 //receiving the routes
 app.use("/api/auth", authRouters);
+app.use("/api/admin/products", adminProductRouters);
 
 //cookie parser
 app.use(cookieParser());

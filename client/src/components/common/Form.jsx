@@ -53,7 +53,7 @@ const Form = ({
               })
             }>
             <SelectTrigger className="w-full ">
-              <SelectValue placeholder={getControlItem.placeholder} />
+              <SelectValue placeholder={getControlItem.label} />
             </SelectTrigger>
             <SelectContent>
               {getControlItem.options && getControlItem.length === 0
