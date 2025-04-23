@@ -46,19 +46,19 @@ export const adminSidebarMenuItems = [
     id: "dashboard",
     label: "Dashboard",
     path: "/admin/dashboard",
-    icon: <LayoutDashboard />,
+    icon: LayoutDashboard,
   },
   {
     id: "products",
     label: "Products",
     path: "/admin/products",
-    icon: <ShoppingBasketIcon />,
+    icon: ShoppingBasketIcon,
   },
   {
     id: "orders",
     label: "Orders",
     path: "/admin/orders",
-    icon: <BadgeCheck />,
+    icon: BadgeCheck,
   },
 ];
 
@@ -134,5 +134,39 @@ export const addProductFormFields = [
     componentType: "input",
     type: "number",
     placeholder: "Enter available stock",
+  },
+];
+
+export const shoppingViewHeaderMenuItems = [
+  {
+    id: "home",
+    label: "Home",
+    path: "/shop/home",
+  },
+  {
+    id: "men",
+    label: "Men",
+    path: "/shop/listing",
+  },
+
+  {
+    id: "women",
+    label: "Women",
+    path: "/shop/listing",
+  },
+  {
+    id: "kids",
+    label: "Kids",
+    path: "/shop/listing",
+  },
+  {
+    id: "footware",
+    label: "Footware",
+    path: "/shop/listing",
+  },
+  {
+    id: "accessories",
+    label: "Accessories",
+    path: "/shop/listing",
   },
 ];

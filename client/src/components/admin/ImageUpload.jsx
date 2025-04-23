@@ -9,6 +9,7 @@ import { Skeleton } from "../ui/skeleton";
 const ImageUpload = ({
   imageFile,
   setImageFile,
+  isEditMode,
   uploadedImageUrl,
   imageLoadingState,
   setUploadedImageUrl,
@@ -63,7 +64,9 @@ const ImageUpload = ({
     <div className="w-full max-w-md mx-auto mt-4">
       <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>
       <div
-        className="border-2 border-dashed rounded-xl p-4"
+        className={`border-2 border-dashed rounded-xl p-4 ${
+          isEditMode ? "opacity-60" : ""
+        }`}
         onDragOver={handleDragOver}
         onDrop={handleDrop}>
         <Input
@@ -71,13 +74,16 @@ const ImageUpload = ({
           type="file"
           className="hidden"
           ref={inputRef}
+          disabled={isEditMode}
           onChange={handleImageUploadChange}
         />
 
         {!imageFile ? (
           <Label
             htmlFor="image-upload"
-            className="flex flex-col items-center justify-center h-32 cursor-pointer">
+            className={`flex flex-col items-center justify-center h-32 cursor-pointer ${
+              isEditMode ? "cursor-not-allowed" : ""
+            }`}>
             <UploadCloudIcon className="size-10 text-muted-foreground mb-2" />
             <span>Drag and drop or click to upload image</span>
           </Label>

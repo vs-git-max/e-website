@@ -7,7 +7,11 @@ import ImageUpload from "@/components/admin/ImageUpload";
 import Form from "@/components/common/Form";
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import { addProductFormFields } from "@/config";
-import { fetchAllProducts } from "@/store/admin/productSlice/productSlice";
+import {
+  deleteProduct,
+  editProduct,
+  fetchAllProducts,
+} from "@/store/admin/productSlice/productSlice";
 import ProductTile from "@/components/admin/ProductTile";
 
 const initialFormData = {
@@ -36,8 +40,28 @@ const Products = () => {
 
   const [imageLoadingState, setImageLoadingState] = useState(false);
 
+  const [currentEdittedImageId, setCurrentEdittedImageId] = useState(null);
+
+  const isFormValid = () => {
+    return Object.values(formData).every((item) => item !== "");
+  };
+
   const onSubmit = (event) => {
     event.preventDefault();
+
+    currentEdittedImageId !== null
+      ? dispatch(editProduct({ id: currentEdittedImageId, formData })).then(
+          (data) => {
+            if (data?.payload?.success) {
+              dispatch(fetchAllProducts);
+              setFormData(initialFormData);
+              setOpenCreateProductsDialog(false);
+              setCurrentEdittedImageId(null);
+            }
+          }
+        )
+      : null;
+
     dispatch({
       ...formData,
       image: uploadedImageUrl,
@@ -58,6 +82,14 @@ const Products = () => {
     dispatch();
   }, [dispatch]);
 
+  const handleDelete = (getCurrentProductId) => {
+    dispatch(deleteProduct(getCurrentProductId)).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchAllProducts);
+      }
+    });
+  };
+
   return (
     <Fragment>
       <div className="mb-5 flex justify-end w-full">
@@ -68,7 +100,13 @@ const Products = () => {
       <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
         {productList && productList.length > 0
           ? productList.map((product) => {
-              <ProductTile product={product} />;
+              <ProductTile
+                product={product}
+                setFormData={setFormData}
+                handleDelete={handleDelete}
+                setCurrentEdittedImageId={setCurrentEdittedImageId}
+                setOpenCreateProductsDialog={setOpenCreateProductsDialog}
+              />;
             })
           : null}
       </div>
@@ -76,24 +114,32 @@ const Products = () => {
         open={openCreateProductsDialog}
         onOpenChange={() => {
           setOpenCreateProductsDialog(false);
+          setCurrentEdittedImageId(null);
+          setFormData(initialFormData);
         }}>
         <SheetContent side="right" className="overflow-auto">
-          <SheetHeader>Add New Product</SheetHeader>
+          <SheetHeader>
+            {currentEdittedImageId !== null
+              ? "Edit Product"
+              : "Add New Product"}
+          </SheetHeader>
           <ImageUpload
             imageFile={imageFile}
             setImageFile={setImageFile}
             uploadedImageUrl={uploadedImageUrl}
             imageLoadingState={imageLoadingState}
+            isEditMode={currentEdittedImageId !== null}
             setUploadedImageUrl={setUploadedImageUrl}
             setImageLoadingState={setImageLoadingState}
           />
           <div className="py-6">
             <Form
               onSubmit={onSubmit}
-              buttonText="Add"
+              buttonText={currentEdittedImageId !== null ? "Edit" : "Add"}
               formData={formData}
               setFormData={setFormData}
               formControls={addProductFormFields}
+              isBtnDisabled={!isFormValid()}
             />
           </div>
         </SheetContent>

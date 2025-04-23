@@ -15,7 +15,7 @@ const editProducts = async (req, res) => {
       totalStock,
     } = req.body;
 
-    const product = await Product.findById(productId);
+    let product = await Product.findById(productId);
 
     if (!product)
       res.status(403).json({
@@ -26,9 +26,9 @@ const editProducts = async (req, res) => {
     product.title = title || product.title;
     product.description = description || product.description;
     product.category = category || product.category;
-    product.price = price || product.price;
+    product.price = price === "" ? 0 : price || product.price;
     product.brand = brand || product.brand;
-    product.salePrice = salePrice || product.salePrice;
+    product.salePrice = salePrice === "" ? 0 : salePrice || product.salePrice;
     product.totalStock = totalStock || product.totalStock;
     product.image = image || product.image;
 

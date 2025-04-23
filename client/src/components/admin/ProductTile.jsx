@@ -2,7 +2,13 @@ import React from "react";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 
-const ProductTile = ({ product }) => {
+const ProductTile = ({
+  product,
+  handleDelete,
+  setFormData,
+  setCurrentEdittedImageId,
+  setOpenCreateProductsDialog,
+}) => {
   return (
     <Card>
       <div>
@@ -28,8 +34,15 @@ const ProductTile = ({ product }) => {
           </div>
         </CardContent>
         <CardFooter className="flex justify-between items-center">
-          <Button>Edit</Button>
-          <Button>Delete</Button>
+          <Button
+            onClick={() => {
+              setCurrentEdittedImageId(product?._id);
+              setOpenCreateProductsDialog(true);
+              setFormData(product);
+            }}>
+            Edit
+          </Button>
+          <Button onClick={() => handleDelete(product?._id)}>Delete</Button>
         </CardFooter>
       </div>
     </Card>
