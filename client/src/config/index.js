@@ -170,3 +170,21 @@ export const shoppingViewHeaderMenuItems = [
     path: "/shop/listing",
   },
 ];
+
+export const filterOptions = {
+  category: [
+    { id: "men", label: "Men" },
+    { id: "women", label: "Women" },
+    { id: "kids", label: "Kids" },
+    { id: "accessories", label: "Accessories" },
+    { id: "footware", label: "Footware" },
+  ],
+  brand: [
+    { id: "nike", label: "Nike" },
+    { id: "puma", label: "Puma" },
+    { id: "adidas", label: "Adidas" },
+    { id: "levi", label: "Levi" },
+    { id: "zara", label: "Zara" },
+    { id: "h&m", label: "H&M" },
+  ],
+};
