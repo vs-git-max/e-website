@@ -5,6 +5,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
   isLoading: false,
   products: [],
+  productDetails: null,
 };
 
 export const fetchAllFilteredProducts = createAsyncThunk(
@@ -17,6 +18,16 @@ export const fetchAllFilteredProducts = createAsyncThunk(
 
     const result = await axios.get(
       `http://localhost:3000/api/shop/products/get?${query}`
+    );
+    return result?.data;
+  }
+);
+
+export const fetchProductDetails = createAsyncThunk(
+  "/products/getProductsDetails",
+  async (id) => {
+    const result = await axios.get(
+      `http://localhost:3000/api/shop/products/get/${id}`
     );
     return result?.data;
   }
@@ -36,6 +47,15 @@ const shoppingProductsSlice = createSlice({
       })
       .addCase(fetchAllFilteredProducts.rejected, (state) => {
         (state.isLoading = false), (state.products = []);
+      })
+      .addCase(fetchProductDetails.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchProductDetails.fulfilled, (state, action) => {
+        (state.isLoading = false), (state.productDetails = action.payload.data);
+      })
+      .addCase(fetchProductDetails.rejected, (state) => {
+        (state.isLoading = false), (state.productDetails = null);
       });
   },
 });

@@ -3,10 +3,10 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 
-const ShoppingProductTile = ({ productItem }) => {
+const ShoppingProductTile = ({ productItem, handleGetProductDetails }) => {
   return (
     <Card className="w-full max-w-sm mx-auto">
-      <div>
+      <div onClick={() => handleGetProductDetails(productItem?._id)}>
         <div className="relative">
           <img
             src={productItem.image}

@@ -11,13 +11,19 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { sortOptions } from "@/config";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllFilteredProducts } from "@/store/shop/shop-slice";
+import {
+  fetchAllFilteredProducts,
+  fetchProductDetails,
+} from "@/store/shop/shop-slice";
 import ShoppingProductTile from "@/components/shopping-view/Product-Tile";
 import { createSearchParams, useSearchParams } from "react-router-dom";
+import ProductDetails from "./ProducDetails";
 
 const Listing = () => {
   const dispatch = useDispatch();
-  const { productsList } = useSelector((state) => state.shopProducts);
+  const { productsList, productDetails } = useSelector(
+    (state) => state.shopProducts
+  );
 
   //fetching the list of products
 
@@ -84,7 +90,20 @@ const Listing = () => {
       const createQueryString = createSearchParamsHelper(filter);
       setSearchParams(new URLSearchParams(createQueryString));
     }
-  }, [filter]);
+  }, [filter, setSearchParams]);
+
+  //handling the get product details
+
+  const handleGetProductDetails = (getCurrentProductId) => {
+    dispatch(fetchProductDetails(getCurrentProductId));
+  };
+
+  //working on the productDetails dialogue
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (productDetails !== null) setOpen(true);
+  }, [productDetails]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6">
@@ -120,11 +139,19 @@ const Listing = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 gap-4 p-4">
           {productsList && productsList.length > 0
             ? productsList.map((productItem) => (
-                <ShoppingProductTile productItem={productItem} />
+                <ShoppingProductTile
+                  productItem={productItem}
+                  handleGetProductDetails={handleGetProductDetails}
+                />
               ))
             : null}
         </div>
       </div>
+      <ProductDetails
+        open={open}
+        setOpen={setOpen}
+        productDetails={productDetails}
+      />
     </div>
   );
 };
