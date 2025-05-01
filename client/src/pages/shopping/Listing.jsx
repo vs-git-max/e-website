@@ -13,6 +13,7 @@ import { sortOptions } from "@/config";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllFilteredProducts } from "@/store/shop/shop-slice";
 import ShoppingProductTile from "@/components/shopping-view/Product-Tile";
+import { createSearchParams, useSearchParams } from "react-router-dom";
 
 const Listing = () => {
   const dispatch = useDispatch();
@@ -21,12 +22,30 @@ const Listing = () => {
   //fetching the list of products
 
   useEffect(() => {
-    dispatch(fetchAllFilteredProducts());
-  }, [dispatch]);
+    if (filter !== null && sort !== null)
+      dispatch(
+        fetchAllFilteredProducts({ filterParams: filter, sortParams: sort })
+      );
+  }, [dispatch, sort, filter]);
 
   //working on the filter functionality
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const createSearchParamsHelper = (filterParams) => {
+    const queryParams = [];
+
+    for (const [key, value] of Object.entries(filterParams)) {
+      if (Array.isArray(value) && value.length > 0) {
+        const paramValue = value.join(",");
+
+        queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
+      }
+    }
+
+    return queryParams.join("&");
+  };
 
   const handleSort = (value) => {
     setSort(value);
@@ -34,6 +53,8 @@ const Listing = () => {
 
   const handleFilter = (getSectionId, getCurrentOption) => {
     let copyFilter = { ...filter };
+    console.log(copyFilter);
+
     const indexOfCurrentSection = Object.keys(copyFilter).indexOf(getSectionId);
 
     if (indexOfCurrentSection === -1) {
@@ -57,6 +78,13 @@ const Listing = () => {
     setSort("price-lowtohign");
     setFilter(JSON.parse(sessionStorage.getItem("filters")) || {});
   }, []);
+
+  useEffect(() => {
+    if (filter && Object.keys(filter).length > 0) {
+      const createQueryString = createSearchParamsHelper(filter);
+      setSearchParams(new URLSearchParams(createQueryString));
+    }
+  }, [filter]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6">

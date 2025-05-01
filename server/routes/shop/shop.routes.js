@@ -1,4 +1,4 @@
-import getFilteredProducts from "../../controllers/shop/getFilteredProducts";
+import getFilteredProducts from "../../controllers/shop/getFilteredProducts.js";
 
 import express from "express";
 
