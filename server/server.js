@@ -11,6 +11,7 @@ import connectToDb from "./database/db.js";
 import authRouters from "./routes/auth.routes.js";
 import adminProductRouters from "./routes/admin/products.routes.js";
 import shopProductsRouter from "./routes/shop/shop.routes.js";
+import cartRouters from "./routes/shop/cart.routes.js";
 
 //creating the app,PORT and configurations
 const app = express();
@@ -36,6 +37,7 @@ app.use(
 app.use("/api/auth", authRouters);
 app.use("/api/admin/products", adminProductRouters);
 app.use("/api/shop/products", shopProductsRouter);
+app.use("/api/shop/cart", cartRouters);
 
 //cookie parser
 app.use(cookieParser());
