@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import Filter from "./filter";
 import {
   DropdownMenu,
@@ -16,14 +17,32 @@ import {
   fetchProductDetails,
 } from "@/store/shop/shop-slice";
 import ShoppingProductTile from "@/components/shopping-view/Product-Tile";
-import { createSearchParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import ProductDetails from "./ProducDetails";
+import { addToCart, fetchCartItems } from "@/store/cart-slice/cart-slice";
 
 const Listing = () => {
   const dispatch = useDispatch();
   const { productsList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
+
+  const { user } = useSelector((state) => state.auth);
+
+  //handling the add to cart functionality
+  const handleAddToCart = (getProductId) => {
+    dispatch(
+      addToCart({
+        userId: user?.id,
+        productId: getProductId,
+        quantity: 1,
+      }).then((data) => {
+        if (data?.payload?.success) {
+          dispatch(fetchCartItems(user?.id));
+        }
+      })
+    );
+  };
 
   //fetching the list of products
 
@@ -142,6 +161,7 @@ const Listing = () => {
                 <ShoppingProductTile
                   productItem={productItem}
                   handleGetProductDetails={handleGetProductDetails}
+                  handleAddToCart={handleAddToCart}
                 />
               ))
             : null}
