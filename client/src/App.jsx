@@ -31,7 +31,7 @@ const App = () => {
 
     if (isLoading)
       return <Skeleton className="w-[600px] h-[600px] rounded-full" />;
-  }, [dispatch]);
+  }, [dispatch, isLoading]);
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
@@ -49,7 +49,7 @@ const App = () => {
         </Route>
 
         {/* admin layout  */}
-        <Route
+        <Route 
           path="/admin"
           element={
             <CheckAuth isAuthenticated={isAuthenticated} user={user}>
