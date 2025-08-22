@@ -8,18 +8,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Filter from "@/components/user/Filter";
+import ProductDetails from "@/components/user/ProductDetails";
 import ShoppingProductTile from "@/components/user/ProductTile";
 import { sortOptions } from "@/config";
-import { fetchAllUserProducts } from "@/store/shop/shop.slice";
+import {
+  fetchAllUserProducts,
+  fetchProductDetails,
+} from "@/store/shop/shop.slice";
 import { ArrowUpDownIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
 const Listing = () => {
-  const { shopProductList } = useSelector((state) => state.userProducts);
+  const { shopProductList, productDetails } = useSelector(
+    (state) => state.userProducts
+  );
   const dispatch = useDispatch();
-
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -68,6 +74,11 @@ const Listing = () => {
     return queryParams.join("&");
   };
 
+  const handleGetProductDetails = (getProductId) => {
+    dispatch(fetchProductDetails(getProductId));
+    console.log(productDetails);
+  };
+
   useEffect(() => {
     if (filters && Object.keys(filters).length > 0) {
       const createQueryString = createSearchParamsHelper(filters);
@@ -86,6 +97,10 @@ const Listing = () => {
         fetchAllUserProducts({ filterParams: filters, sortParams: sort })
       );
   }, [dispatch, sort, filters]);
+
+  useEffect(() => {
+    if (productDetails !== null) setOpenDetailsDialog(true);
+  }, [productDetails]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-6 p-4 md:p-6 ">
@@ -125,10 +140,19 @@ const Listing = () => {
           {shopProductList &&
             shopProductList?.length > 0 &&
             shopProductList?.map((product) => (
-              <ShoppingProductTile product={product} key={product?.id} />
+              <ShoppingProductTile
+                product={product}
+                key={product?.id}
+                handleGetProductDetails={handleGetProductDetails}
+              />
             ))}
         </div>
       </div>
+      <ProductDetails
+        productDetails={productDetails}
+        open={openDetailsDialog}
+        setOpen={setOpenDetailsDialog}
+      />
     </div>
   );
 };
