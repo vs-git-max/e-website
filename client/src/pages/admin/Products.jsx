@@ -60,7 +60,6 @@ const Products = () => {
             image: imageURL,
           })
         ).then((data) => {
-          console.log(data);
           if (data?.payload?.success) {
             setFormData(initialState);
             setImageFile(null);

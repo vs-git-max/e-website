@@ -18,17 +18,13 @@ const Login = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(loginUser(formData))
-      .then((data) => {
-        if (data?.payload?.success) {
-          toast.success(data?.payload?.message);
-        } else {
-          toast.error(data?.payload?.message);
-        }
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    dispatch(loginUser(formData)).then((data) => {
+      if (data?.payload?.success) {
+        toast.success(data?.payload?.message);
+      } else {
+        toast.error(data?.payload?.message);
+      }
+    });
   };
 
   return (

@@ -11,6 +11,7 @@ import Filter from "@/components/user/Filter";
 import ProductDetails from "@/components/user/ProductDetails";
 import ShoppingProductTile from "@/components/user/ProductTile";
 import { sortOptions } from "@/config";
+import { addToCart, fetchCartItems } from "@/store/cart/cart.slice";
 import {
   fetchAllUserProducts,
   fetchProductDetails,
@@ -19,6 +20,7 @@ import { ArrowUpDownIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const Listing = () => {
   const { shopProductList, productDetails } = useSelector(
@@ -29,6 +31,7 @@ const Listing = () => {
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const { user } = useSelector((state) => state.auth);
 
   const handleSort = (value) => {
     setSort(value);
@@ -76,7 +79,17 @@ const Listing = () => {
 
   const handleGetProductDetails = (getProductId) => {
     dispatch(fetchProductDetails(getProductId));
-    console.log(productDetails);
+  };
+
+  const handleAddToCart = (getProductId) => {
+    dispatch(
+      addToCart({ userId: user?.id, productId: getProductId, quantity: 1 })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        toast.success("Product added to cart");
+        dispatch(fetchCartItems({ userId: user?.id }));
+      }
+    });
   };
 
   useEffect(() => {
@@ -84,7 +97,7 @@ const Listing = () => {
       const createQueryString = createSearchParamsHelper(filters);
       setSearchParams(new URLSearchParams(createQueryString));
     }
-  }, [filters]);
+  }, [filters, setSearchParams]);
 
   useEffect(() => {
     setSort("price-lowtohigh");
@@ -143,6 +156,7 @@ const Listing = () => {
               <ShoppingProductTile
                 product={product}
                 key={product?.id}
+                handleAddToCart={handleAddToCart}
                 handleGetProductDetails={handleGetProductDetails}
               />
             ))}

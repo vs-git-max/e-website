@@ -5,7 +5,7 @@ const addToCart = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
 
-    if (!userId || productId || quantity <= 0) {
+    if (!userId || !productId || quantity <= 0) {
       return res
         .json({
           success: false,

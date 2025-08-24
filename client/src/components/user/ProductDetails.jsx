@@ -5,10 +5,33 @@ import { Separator } from "../ui/separator";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { StarIcon } from "lucide-react";
 import { Input } from "../ui/input";
+import { addToCart, fetchCartItems } from "@/store/cart/cart.slice";
+import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { setProductsDetails } from "@/store/shop/shop.slice";
 
 const ProductDetails = ({ open, setOpen, productDetails }) => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  const handleAddToCart = (getProductId) => {
+    dispatch(
+      addToCart({ userId: user?.id, productId: getProductId, quantity: 1 })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        toast.success("Product added to cart");
+        dispatch(fetchCartItems({ userId: user?.id }));
+      }
+    });
+  };
+
+  const handleDialogClose = () => {
+    setProductsDetails();
+    setOpen(false);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleDialogClose}>
       <DialogContent className="grid grid-cols-2 gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw]">
         <div className="relative overflow-hidden rounded-lg">
           <img
@@ -51,7 +74,12 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
             <span className="text-muted-foreground font-medium">4.5</span>
           </div>
           <div className="mt-5 mb-5">
-            <Button className="mt-5 w-full">Add to Cart</Button>
+            <Button
+              className="mt-5 w-full"
+              onClick={() => handleAddToCart(productDetails?._id)}
+            >
+              Add to Cart
+            </Button>
           </div>
           <Separator />
           <div className="max-h-[300px] overflow-auto">

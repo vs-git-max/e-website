@@ -21,21 +21,15 @@ const Signup = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(registerUser(formData))
-      .then((data) => {
-        if (data?.payload?.success) {
-          navigate("/auth/login");
-          toast.success(data?.payload?.message);
-        } else {
-          toast.error(data?.payload?.message);
-        }
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    dispatch(registerUser(formData)).then((data) => {
+      if (data?.payload?.success) {
+        navigate("/auth/login");
+        toast.success(data?.payload?.message);
+      } else {
+        toast.error(data?.payload?.message);
+      }
+    });
   };
-
-  console.log(formData);
 
   return (
     <div className="mx-auto w-full max-w-md space-y-6">

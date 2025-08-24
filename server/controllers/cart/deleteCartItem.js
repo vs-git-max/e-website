@@ -4,7 +4,7 @@ const deleteCartItem = async (req, res) => {
   try {
     const { userId, productId } = req.params;
 
-    if (!userId || productId) {
+    if (!userId || !productId) {
       return res
         .json({
           success: false,
@@ -12,6 +12,7 @@ const deleteCartItem = async (req, res) => {
         })
         .status(400);
     }
+    console.log(productId, "product id");
 
     const cart = await Cart.findOne({ userId }).populate({
       path: "items.productId",
@@ -26,12 +27,12 @@ const deleteCartItem = async (req, res) => {
     }
 
     cart.items = cart.items.filter(
-      (item) => item.productId._id.toString() !== productId
+      (item) => item.productId?._id.toString() !== productId
     );
 
     await cart.save();
 
-    await Cart.populate({
+    await cart.populate({
       path: "items.productId",
       select: "image title price salesPrice",
     });
@@ -54,7 +55,7 @@ const deleteCartItem = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res.json({
       success: false,
       message: "Error deleting cart item",
