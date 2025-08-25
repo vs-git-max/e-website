@@ -25,7 +25,7 @@ const CartWrapper = ({ cartItems }) => {
         <SheetTitle>Your Cart</SheetTitle>
       </SheetHeader>
       <div className="mt-8 space-y-4 overflow-auto">
-        {cartItems?.items && cartItems?.items.length > 0
+        {cartItems?.items && cartItems?.items?.length > 0
           ? cartItems?.items?.map((cartItem) => (
               <CartItem key={cartItem?.id} cartItem={cartItem} />
             ))
