@@ -6,8 +6,8 @@ import deleteAddress from "../controllers/address/deleteAddress.js";
 
 const addressRouter = Router();
 
-addressRouter.get("/fetch-address", fetchAddress);
-addressRouter.put("/edit-address", editAddress);
+addressRouter.get("/fetch-address/:userId", fetchAddress);
+addressRouter.put("/edit-address/:userId/:addressId", editAddress);
 addressRouter.post("/add-address", addAddress);
 addressRouter.delete("/delete-address", deleteAddress);
 
