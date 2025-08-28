@@ -5,7 +5,7 @@ import CartItem from "./CartItem";
 
 const CartWrapper = ({ cartItems }) => {
   const total =
-    cartItems && cartItems?.items.length > 0
+    Array.isArray(cartItems?.items) && cartItems?.items.length > 0
       ? cartItems.items
           .reduce(
             (sum, currentItem) =>
@@ -25,7 +25,9 @@ const CartWrapper = ({ cartItems }) => {
         <SheetTitle>Your Cart</SheetTitle>
       </SheetHeader>
       <div className="mt-8 space-y-4 overflow-auto">
-        {cartItems?.items && cartItems?.items?.length > 0
+        {Array.isArray(cartItems?.items) &&
+        cartItems?.items &&
+        cartItems?.items?.length > 0
           ? cartItems?.items?.map((cartItem) => (
               <CartItem key={cartItem?.id} cartItem={cartItem} />
             ))
