@@ -11,6 +11,7 @@ import connectToDB from "./database/db.js";
 import productsRouter from "./routes/products.routes.js";
 import shopProductsRouter from "./routes/shop.products.routes.js";
 import cartRouter from "./routes/cart.routes.js";
+import addressRouter from "./routes/adddress.routes.js";
 
 //creating app
 const app = express();
@@ -37,6 +38,7 @@ app.use(
 //using the functions
 app.use("/api/cart", cartRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/address", addressRouter);
 app.use("/api/admin/products", productsRouter);
 app.use("/api/shop/products", shopProductsRouter);
 
