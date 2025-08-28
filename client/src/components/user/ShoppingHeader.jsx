@@ -17,14 +17,35 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { logoutUser } from "@/store/auth/auth-slice";
 import CartWrapper from "./CartWrapper";
 import { fetchCartItems } from "@/store/cart/cart.slice";
+import { Label } from "../ui/label";
 
 const MenuItems = () => {
+  const navigate = useNavigate();
+
+  const handleNavigate = (getCurrentMenuItem) => {
+    sessionStorage.removeItem("filters");
+
+    const currentFilters =
+      getCurrentMenuItem.id !== "home"
+        ? {
+            category: [getCurrentMenuItem.id],
+          }
+        : null;
+
+    sessionStorage.setItem("filters", JSON.stringify(currentFilters));
+    navigate(getCurrentMenuItem.path);
+  };
+
   return (
     <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
       {shoppingViewHeaderMenuItems.map((item) => (
-        <Link key={item.id} to={item.path} className="text-sm font-medium">
+        <Label
+          onClick={() => handleNavigate(item)}
+          key={item.id}
+          className="text-sm font-medium cursor-pointer"
+        >
           {item.label}
-        </Link>
+        </Label>
       ))}
     </nav>
   );
@@ -43,8 +64,6 @@ const HeaderRightContent = ({ user }) => {
   useEffect(() => {
     dispatch(fetchCartItems({ userId: user?.id }));
   }, [dispatch, user?.id]);
-
-  console.log(cartItems);
 
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4 ">
