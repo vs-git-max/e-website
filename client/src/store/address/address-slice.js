@@ -28,7 +28,7 @@ export const editAddress = createAsyncThunk(
 );
 
 export const deleteAddress = createAsyncThunk(
-  "/address/edit",
+  "/address/delete",
   async ({ userId, addressId }) => {
     const res = await axios.put(
       `http://localhost:8003/api/address/delete-address/${userId}/${addressId}`
