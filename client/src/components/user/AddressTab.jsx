@@ -25,11 +25,13 @@ const AddressTab = () => {
 
     dispatch(
       addAddress({
-        ...formData,
+        formData,
         userId: user?.id,
       })
     ).then((data) => console.log(data));
   };
+
+  console.log(user?.id);
 
   const ifFormValid = () => {
     return Object.keys(formData)

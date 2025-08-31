@@ -13,6 +13,8 @@ const addAddress = async (req, res) => {
         .json({ success: false, message: "Enter all the input fields." });
     }
 
+    console.log(userId);
+
     const newlyCreatedAddress = new Address({
       userId,
       address,

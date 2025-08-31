@@ -42,8 +42,7 @@ export const addAddress = createAsyncThunk(
   async ({ formData, userId }) => {
     const res = await axios.post(
       `http://localhost:8003/api/address/add-address`,
-      formData,
-      userId
+      { ...formData, userId }
     );
     return res?.data;
   }
@@ -52,7 +51,7 @@ export const addAddress = createAsyncThunk(
 const addressSlice = createSlice({
   name: "address",
   initialState,
-  reducer: {},
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchAddress.pending, (state) => {
