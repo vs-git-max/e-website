@@ -39,10 +39,11 @@ export const deleteAddress = createAsyncThunk(
 
 export const addAddress = createAsyncThunk(
   "/address/add",
-  async ({ formData }) => {
+  async ({ formData, userId }) => {
     const res = await axios.post(
       `http://localhost:8003/api/address/add-address`,
-      { formData }
+      formData,
+      userId
     );
     return res?.data;
   }
