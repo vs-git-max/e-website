@@ -21,7 +21,7 @@ export const editAddress = createAsyncThunk(
   async ({ userId, addressId, formData }) => {
     const res = await axios.put(
       `http://localhost:8003/api/address/edit-address/${userId}/${addressId}`,
-      { formData }
+      { ...formData }
     );
     return res?.data;
   }
@@ -30,7 +30,7 @@ export const editAddress = createAsyncThunk(
 export const deleteAddress = createAsyncThunk(
   "/address/delete",
   async ({ userId, addressId }) => {
-    const res = await axios.put(
+    const res = await axios.delete(
       `http://localhost:8003/api/address/delete-address/${userId}/${addressId}`
     );
     return res?.data;
