@@ -30,6 +30,7 @@ const editAddress = async (req, res) => {
 
     res.status(201).json({
       success: true,
+      message: "Address edited successfully",
       data: address,
     });
   } catch (error) {

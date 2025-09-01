@@ -30,6 +30,12 @@ const AddressTab = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
+    if (addressData.length >= 3 && currentEditedId === null) {
+      toast.error("You can have a max of three addresses");
+      setFormData(initialFormData);
+      return;
+    }
+
     currentEditedId !== null
       ? dispatch(
           editAddress({
@@ -42,6 +48,7 @@ const AddressTab = () => {
             dispatch(fetchAddress(user?.id));
             setFormData(initialFormData);
             setCurrentEditedId(null);
+            toast.success(data?.payload?.message);
           }
         })
       : dispatch(
@@ -53,6 +60,7 @@ const AddressTab = () => {
           if (data?.payload?.success) {
             dispatch(fetchAddress(user?.id));
             setFormData(initialFormData);
+            toast.success(data?.payload?.message);
           }
         });
   };
@@ -97,7 +105,7 @@ const AddressTab = () => {
 
   return (
     <Card>
-      <div className="mb-5 p-3 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
+      <div className="mb-5 p-3 grid grid-cols-1 gap-2 sm:grid-cols-2 ">
         {" "}
         {addressData && addressData?.length > 0
           ? addressData.map((address) => (
