@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import Form from "../common/Form";
 import { addressFormControls } from "@/config";
 import { useDispatch, useSelector } from "react-redux";
-import { addAddress } from "@/store/address/address-slice";
+import { addAddress, fetchAddress } from "@/store/address/address-slice";
+import AddressCard from "./AddressCard";
 
 const initialFormData = {
   address: "",
@@ -17,6 +18,7 @@ const AddressTab = () => {
   const [formData, setFormData] = useState(initialFormData);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const { addressData } = useSelector((state) => state.address);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -28,10 +30,19 @@ const AddressTab = () => {
         formData,
         userId: user?.id,
       })
-    ).then((data) => console.log(data));
+    ).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchAddress(user?.id));
+        setFormData(initialFormData);
+      }
+    });
   };
 
-  console.log(user?.id);
+  useEffect(() => {
+    dispatch(fetchAddress(user?.id));
+  }, [dispatch, user?.id]);
+
+  console.log(addressData);
 
   const ifFormValid = () => {
     return Object.keys(formData)
@@ -41,7 +52,12 @@ const AddressTab = () => {
 
   return (
     <Card>
-      <div className="">Address List </div>
+      <div className="mb-5 p-3 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
+        {" "}
+        {addressData && addressData?.length > 0
+          ? addressData.map((address) => <AddressCard address={address} />)
+          : null}
+      </div>
       <CardHeader>
         <CardTitle>Add new address</CardTitle>
       </CardHeader>

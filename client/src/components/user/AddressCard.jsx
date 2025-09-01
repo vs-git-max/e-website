@@ -4,12 +4,14 @@ import { Label } from "../ui/label";
 
 const AddressCard = ({ address }) => {
   return (
-    <CardContent className="grid gap-4">
-      <Label>{address?.label}</Label>
-      <Label>{address?.city}</Label>
-      <Label>{address?.pincodel}</Label>
-      <Label>{address?.notes}</Label>
-    </CardContent>
+    <Card>
+      <CardContent className="grid gap-4 p-4">
+        <Label>Address : {address?.address}</Label>
+        <Label>City : {address?.city}</Label>
+        <Label>Pincode : {address?.pincode}</Label>
+        <Label>Notes : {address?.notes}</Label>
+      </CardContent>
+    </Card>
   );
 };
 

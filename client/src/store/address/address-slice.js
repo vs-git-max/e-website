@@ -8,7 +8,7 @@ const initialState = {
 
 export const fetchAddress = createAsyncThunk(
   "/address/fetch",
-  async ({ userId }) => {
+  async (userId) => {
     const res = await axios.get(
       `http://localhost:8003/api/address/fetch-address/${userId}`
     );
