@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: mern-backend
+    env: node
+    plan: free
+    branch: main
+    buildCommand: "cd backend && npm install"
+    startCommand: "cd backend && npm start"
+    envVars:
+      - key: MONGO_URI
+        value: your-mongodb-connection-string
+      - key: JWT_SECRET
+        value: your-secret-key
+      - key: NODE_ENV
+        value: production
+
+  - type: web
+    name: mern-frontend
+    env: static
+    plan: free
+    branch: main
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: "frontend/build"
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://mern-backend.onrender.com
