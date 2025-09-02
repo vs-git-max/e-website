@@ -1,20 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { DialogContent } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
-import Form from "../common/Form";
 
-const initialFormData = {
-  status: "",
-};
-
-const OrderDetails = () => {
-  const [formData, setFormData] = useState(initialFormData);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-  };
-
+const UserOrderDetails = () => {
   return (
     <DialogContent className="sm:max-w-[600px]">
       <div className="grid gap-6">
@@ -61,31 +50,9 @@ const OrderDetails = () => {
             </div>
           </div>
         </div>
-        <div className="">
-          <Form
-            formControls={[
-              {
-                label: "Status",
-                name: "status",
-                componentType: "select",
-                options: [
-                  { id: "pending", label: "Pending" },
-                  { id: "inProcess", label: "In Process" },
-                  { id: "inShipping", label: "In Shipping" },
-                  { id: "delivered", label: "Delivered" },
-                  { id: "rejected", label: "Rejected" },
-                ],
-              },
-            ]}
-            formData={formData}
-            setFormData={setFormData}
-            buttonText={"Update Order Status"}
-            onSubmit={onSubmit}
-          />
-        </div>
       </div>
     </DialogContent>
   );
 };
 
-export default OrderDetails;
+export default UserOrderDetails;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
   Table,
@@ -9,8 +9,12 @@ import {
   TableRow,
 } from "../ui/table";
 import { Button } from "../ui/button";
+import { Dialog } from "../ui/dialog";
+import UserOrderDetails from "./UserOrderDetails";
 
 const OrdersTab = () => {
+  const [open, setOpen] = useState(false);
+
   return (
     <Card>
       <CardHeader>
@@ -36,7 +40,10 @@ const OrdersTab = () => {
               <TableCell>In Process</TableCell>
               <TableCell>$1000</TableCell>
               <TableCell>
-                <Button>View Details</Button>
+                <Dialog open={open} onOpenChange={setOpen}>
+                  <Button onClick={() => setOpen(true)}>View Details</Button>
+                  <UserOrderDetails />
+                </Dialog>
               </TableCell>
             </TableRow>
           </TableBody>
