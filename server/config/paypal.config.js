@@ -1,13 +1,15 @@
-import checkoutNodeJssdk from "@paypal/paypal-server-sdk";
+import paypal from "@paypal/checkout-server-sdk";
 
-const environment = () => {
+function environment() {
   let clientId = process.env.PAYPAL_CLIENT_ID;
   let clientSecret = process.env.PAYPAL_CLIENT_SECRET;
-  return new checkoutNodeJssdk.core.SandboxEnvironment(clientId, clientSecret);
-};
 
-const client = () => {
-  return new checkoutNodeJssdk.core.PayPalHttpClient(environment());
-};
+  return new paypal.core.SandboxEnvironment(clientId, clientSecret);
+  // Use paypal.core.LiveEnvironment for production
+}
+
+function client() {
+  return new paypal.core.PayPalHttpClient(environment());
+}
 
 export default client;
